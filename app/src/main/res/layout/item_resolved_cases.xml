@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardResolvedCase"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header con código y badge -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:id="@+id/tvCaseCode"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="#A0224089"
+                android:textSize="13sp"
+                android:textColor="#999999"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✅ RESUELTO"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:background="#4CAF50"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:elevation="1dp"/>
+
+        </LinearLayout>
+
+        <!-- Fotos y contenido principal -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Barra lateral verde -->
+            <View
+                android:layout_width="4dp"
+                android:layout_height="match_parent"
+                android:background="#4CAF50"
+                android:layout_marginEnd="12dp"/>
+
+            <!-- Foto original -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivOriginalPhoto"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/ic_person_placeholder"
+                app:civ_border_width="2dp"
+                app:civ_border_color="#E0E0E0"
+                android:layout_marginEnd="12dp"/>
+
+            <!-- Información del caso -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <!-- Estado -->
+                <TextView
+                    android:id="@+id/tvCaseState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Perro herido"
+                    android:textSize="16sp"
+                    android:textColor="#424242"
+                    android:textStyle="bold"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginBottom="4dp"/>
+                <TextView
+                    android:id="@+id/tvCasePetType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="🐕 Perro"
+                    android:textSize="12sp"
+                    android:textColor="#95A5A6"/>
+                <!-- Dirección -->
+                <TextView
+                    android:id="@+id/tvCaseAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Av. España 123"
+                    android:textSize="13sp"
+                    android:textColor="#666666"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@android:drawable/ic_dialog_map"
+                    android:drawableTint="#999999"
+                    android:layout_marginBottom="8dp"/>
+
+                <!-- Fecha de resolución -->
+                <TextView
+                    android:id="@+id/tvResolvedDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Salvado hace 2 días"
+                    android:textSize="12sp"
+                    android:textColor="#4CAF50"
+                    android:textStyle="bold"
+                    android:drawablePadding="4dp"
+                    android:drawableStart="@android:drawable/ic_menu_recent_history"
+                    android:drawableTint="#4CAF50"/>
+
+            </LinearLayout>
+
+            <!-- Foto de salvamento (pequeña) -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivSavedPhotoSmall"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:src="@drawable/ic_person_placeholder"
+                app:civ_border_width="3dp"
+                app:civ_border_color="#4CAF50"
+                android:layout_marginStart="8dp"
+                android:layout_gravity="center_vertical"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <!-- Reportado por -->
+        <TextView
+            android:id="@+id/tvReportedBy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reportado por: usuario@ejemplo.com"
+            android:textSize="11sp"
+            android:textColor="#999999"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="80dp"
+            android:drawablePadding="4dp"
+            android:drawableStart="@android:drawable/ic_menu_info_details"
+            android:drawableTint="#999999"/>
+
+        <!-- Notas del rescate -->
+        <TextView
+            android:id="@+id/tvSavedNotes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📝 Fue llevado al veterinario, está recuperándose bien"
+            android:textSize="12sp"
+            android:textColor="#666666"
+            android:textStyle="italic"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="80dp"
+            android:padding="8dp"
+            android:background="#F0F8F0"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

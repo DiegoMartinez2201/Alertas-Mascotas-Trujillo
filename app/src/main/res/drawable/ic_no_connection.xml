@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Señal WiFi -->
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M2.28,6.22C7.11,2.27 16.89,2.27 21.72,6.22l-1.41,1.41C16.4,4.05 7.6,4.05 3.69,7.63zM5.69,9.63C9.03,6.95 14.97,6.95 18.31,9.63l-1.41,1.41c-2.71,-2.07 -8.09,-2.07 -10.9,0zM8.7,12.64c1.99,-1.52 4.61,-1.52 6.6,0l-1.41,1.41c-1.22,-0.93 -2.56,-0.93 -3.78,0z" />
+
+    <!-- Cruz roja -->
+    <path
+        android:fillColor="#E53935"
+        android:pathData="M17.66,17.66l-2.12,2.12l-2.12,-2.12l-1.41,1.41l2.12,2.12l-2.12,2.12l1.41,1.41l2.12,-2.12l2.12,2.12l1.41,-1.41l-2.12,-2.12l2.12,-2.12z" />
+</vector>

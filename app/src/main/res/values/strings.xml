@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">AlertaMascota</string>
+    <string name="default_web_client_id">374660353781-duvuo95oqius2cqo8ce874dbstt63v0m.apps.googleusercontent.com</string>
+
+    <!-- Alert Form -->
+    <string name="alert_form_title">Crear Alerta de Mascota</string>
+    <string name="alert_photo_hint">Agregar Foto</string>
+    <string name="alert_address_hint">Dirección</string>
+    <string name="alert_state_hint">Estado de la mascota</string>
+    <string name="alert_description_hint">Descripción (opcional)</string>
+    <string name="alert_register_button">Registrar Alerta</string>
+    <string name="alert_cancel_button">Cancelar</string>
+
+    <!-- Alert Detail -->
+    <string name="alert_detail_title">Detalle de Alerta</string>
+
+    <!-- Mark Saved -->
+    <string name="mark_saved_title">Marcar como Salvado</string>
+
+    <!-- Resolved Cases -->
+    <string name="resolved_cases_title">Mis Casos Resueltos</string>
+
+    <!-- Alert States -->
+    <string-array name="alert_states">
+        <item>Selecciona un estado</item>
+        <item>Herido</item>
+        <item>Perdido</item>
+        <item>Abandonado</item>
+        <item>En Peligro</item>
+        <item>Necesita Adopción</item>
+        <item>Enfermo</item>
+    </string-array>
+
+    <!-- Tipos de mascota -->
+    <string-array name="pet_types">
+        <item>Selecciona tipo de mascota</item>
+        <item>🐕 Perro</item>
+        <item>🐱 Gato</item>
+        <item>🐦 Ave</item>
+        <item>❓ Otro</item>
+    </string-array>
+    <string name="feedback_title">Enviar Comentarios</string>
+    <string name="feedback_description">Tu opinión es importante</string>
+    <string name="notification_channel_name">Alertas de Mascotas</string>
+    <string name="notification_channel_description">Notificaciones de nuevas alertas cerca de ti</string>
+    <string name="user_icon"></string>
+</resources>

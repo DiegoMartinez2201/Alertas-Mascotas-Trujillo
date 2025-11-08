@@ -1,0 +1,29 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Tema base perdido (restaurado) -->
+    <style name="Base.Theme.MapsExample" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#3498DB</item>
+        <item name="colorPrimaryDark">#2980B9</item>
+        <item name="colorAccent">#3498DB</item>
+        <item name="android:statusBarColor">#F5F5F5</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <!-- Tema general de tu app -->
+    <style name="Theme.AlertaMascota" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorOnSurface">@color/menu_text_color</item>
+    </style>
+
+    <!-- Tema heredado del proyecto anterior -->
+    <style name="Theme.MapsExample" parent="Base.Theme.MapsExample" />
+
+    <!-- Variante sin ActionBar -->
+    <style name="Theme.MapsExample.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">#3498DB</item>
+        <item name="colorPrimaryDark">#2980B9</item>
+        <item name="colorAccent">#3498DB</item>
+        <item name="android:statusBarColor">#F5F5F5</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+</resources>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardAdminCase"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- Foto -->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivAdminCasePhoto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ic_person_placeholder"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#3498DB" />
+
+        <!-- Información -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="16dp">
+
+            <!-- Código y Estado -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/tvAdminCaseCode"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="#ABC1234"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#2C3E50" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipAdminStatus"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🔔 Activo"
+                    android:textSize="11sp"
+                    app:chipMinHeight="24dp" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tvAdminPetType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="🐕 Tipo: Perro"
+                android:textSize="12sp"
+                android:textColor="#95A5A6"/>
+            <!-- Estado del animal -->
+            <TextView
+                android:id="@+id/tvAdminCaseState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="🐾 Herido"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#E67E22" />
+
+            <!-- Dirección -->
+            <TextView
+                android:id="@+id/tvAdminCaseAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="📍 Dirección del caso"
+                android:textSize="13sp"
+                android:textColor="#7F8C8D"
+                android:maxLines="2"
+                android:ellipsize="end" />
+
+            <!-- Reportado por -->
+            <TextView
+                android:id="@+id/tvAdminReportedBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Reportado por: user@example.com"
+                android:textSize="12sp"
+                android:textColor="#95A5A6" />
+
+            <!-- Resuelto por (condicional) -->
+            <TextView
+                android:id="@+id/tvAdminResolvedBy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Resuelto por: resolver@example.com"
+                android:textSize="12sp"
+                android:textColor="#27AE60"
+                android:visibility="gone" />
+
+            <!-- Fecha -->
+            <TextView
+                android:id="@+id/tvAdminCaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="🕒 Hace 2 horas"
+                android:textSize="11sp"
+                android:textColor="#BDC3C7" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

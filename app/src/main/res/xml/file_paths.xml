@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 📸 Para compartir códigos QR -->
+    <cache-path name="qr_codes" path="qr_codes/" />
+
+    <!-- 📄 Para archivos compartidos generales -->
+    <cache-path name="shared_files" path="/" />
+
+    <!-- 📋 Para PDFs de certificados de rescate -->
+    <external-files-path name="documents" path="Documents/"/>
+
+    <!-- 🖼️ Para fotos de perfil, alertas y rescates -->
+    <external-files-path name="pictures" path="Pictures/"/>
+
+    <!-- 📂 Para cualquier archivo externo -->
+    <external-path name="external_files" path="."/>
+
+    <!-- 💾 Para archivos internos de la app -->
+    <files-path name="internal_files" path="." />
+
+    <!-- 🗂️ Para archivos en el caché interno -->
+    <cache-path name="cache" path="." />
+
+</paths>

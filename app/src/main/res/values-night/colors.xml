@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores adaptativos para textos en modo oscuro -->
+    <color name="text_primary_adaptive">#FFFFFF</color>
+    <color name="text_secondary_adaptive">#E0E0E0</color>
+    <color name="text_tertiary_adaptive">#BDBDBD</color>
+
+    <!-- Colores para fondos de cards en modo oscuro -->
+    <color name="card_text_dark">#FFFFFF</color>
+    <color name="card_text_medium">#E0E0E0</color>
+    <color name="card_text_light">#BDBDBD</color>
+
+    <!-- Estos colores se mantienen igual en ambos modos -->
+    <color name="success_green">#27AE60</color>
+    <color name="warning_orange">#E67E22</color>
+    <color name="error_red">#E74C3C</color>
+    <color name="info_blue">#3498DB</color>
+
+    <color name="menu_text_color">#FFFFFF</color>
+    <color name="menu_icon_tint">#E0E0E0</color>
+</resources>

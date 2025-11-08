@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_account_info"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="Información de cuenta" />
+
+        <item
+            android:id="@+id/nav_lost_found"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="Casos Pendientes" />
+
+        <item
+            android:id="@+id/nav_miscasosresueltos"
+            android:icon="@android:drawable/ic_menu_search"
+            android:title="Mis Casos" />
+
+        <item
+            android:id="@+id/nav_my_chats"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="💬 Mis Chats" />
+
+    </group>
+
+    <item android:title="Configuración">
+        <menu>
+            <!-- Switch rápido para activar/desactivar notificaciones -->
+            <item
+                android:id="@+id/nav_notifications"
+                android:icon="@android:drawable/ic_popup_reminder"
+                android:title="🔔 Activar Notificaciones"
+                app:actionLayout="@layout/switch_item" />
+
+            <!-- Configuración detallada de notificaciones -->
+            <item
+                android:id="@+id/nav_notification_settings"
+                android:icon="@android:drawable/ic_menu_manage"
+                android:title="⚙️ Configurar Filtros" />
+
+        </menu>
+    </item>
+
+    <item android:title="Soporte">
+        <menu>
+
+            <item
+                android:id="@+id/nav_feedback"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="Envíe Comentarios" />
+
+            <item
+                android:id="@+id/nav_terms"
+                android:icon="@android:drawable/ic_menu_agenda"
+                android:title="Términos y condiciones" />
+
+            <item
+                android:id="@+id/nav_privacy"
+                android:icon="@android:drawable/ic_lock_lock"
+                android:title="Política y Privacidad" />
+        </menu>
+    </item>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:id="@+id/nav_sign_out"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Cerrar Sesión"
+                android:titleCondensed="Cerrar Sesión" />
+        </menu>
+    </item>
+
+</menu>

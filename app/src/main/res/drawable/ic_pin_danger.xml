@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="64dp"
+    android:viewportWidth="48"
+    android:viewportHeight="64">
+
+    <path
+        android:fillColor="#9B59B6"
+        android:pathData="M24,2C13.51,2 5,10.51 5,21c0,15.75 19,41 19,41s19,-25.25 19,-41C43,10.51 34.49,2 24,2z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,8C16.82,8 11,13.82 11,21c0,10.5 13,27.5 13,27.5S37,31.5 37,21C37,13.82 31.18,8 24,8z"/>
+
+    <!-- Triángulo de advertencia morado -->
+    <path
+        android:fillColor="#9B59B6"
+        android:pathData="M24,14L16,28h16L24,14zM25.5,25h-3v-3h3V25zM25.5,20h-3v-4h3V20z"/>
+</vector>

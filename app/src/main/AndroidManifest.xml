@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.primero.alertamascota">
+
+    <!-- Permisos necesarios -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+    <!-- Permisos para imágenes -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+
+    <!-- Permisos para notificaciones -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
+
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AlertaMascota">
+
+        <!-- Meta-data para la clave de API de Google Maps -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDD9aikjJNPdLPuMOTair4MQ8vrEHrbF3g" />
+
+        <!-- LoginActivity - Pantalla de inicio -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+        <!-- MapsActivity - Pantalla del mapa -->
+        <activity
+            android:name=".MapsActivity"
+            android:exported="false" />
+
+        <!-- AlertFormActivity - Formulario de alertas de mascotas -->
+        <activity
+            android:name=".AlertFormActivity"
+            android:exported="false"
+            android:label="@string/alert_form_title"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+
+        <!-- AlertDetailActivity - Detalle de alerta -->
+        <!-- AlertDetailActivity - Detalle de alerta -->
+        <activity
+            android:name=".AlertDetailActivity"
+            android:exported="true"
+            android:label="@string/alert_detail_title"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+
+            <!-- Deep Link para abrir alertas desde QR -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="alertamascotas"
+                    android:host="alert" />
+            </intent-filter>
+
+        </activity>
+        <!-- MarkSavedActivity - Marcar como salvado -->
+        <activity
+            android:name=".MarkSavedActivity"
+            android:exported="false"
+            android:label="@string/mark_saved_title"
+            android:parentActivityName=".AlertDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AlertDetailActivity" />
+        </activity>
+
+        <activity
+            android:name=".UserProfileActivity"
+            android:exported="false"
+            android:label="Perfil de Usuario"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <activity
+            android:name=".LostFoundActivity"
+            android:exported="false"
+            android:label="Perdido y Encontrado"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <activity
+            android:name=".MyCasesActivity"
+            android:exported="false"
+            android:label="Mis Casos Resueltos"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <!-- 🆕 NotificationSettingsActivity - Configuración de notificaciones -->
+        <activity
+            android:name=".NotificationSettingsActivity"
+            android:exported="false"
+            android:label="Configuración de Notificaciones"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <!-- FileProvider para compartir archivos (códigos QR) -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.primero.alertamascota.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".FeedbackActivity"
+            android:exported="false"
+            android:label="Enviar Comentarios"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <!-- 🔔 NotificationService - Servicio mejorado de notificaciones -->
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <activity
+            android:name=".AdminDashboardActivity"
+            android:exported="false"
+            android:label="Panel de Administración"
+            android:theme="@style/Theme.MapsExample" />
+
+        <activity
+            android:name=".CaseManagementActivity"
+            android:exported="false"
+            android:label="Gestión de Caso"
+            android:parentActivityName=".AdminDashboardActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AdminDashboardActivity" />
+        </activity>
+
+        <!-- ChatsListActivity - Lista de chats -->
+        <activity
+            android:name=".ChatsListActivity"
+            android:exported="false"
+            android:label="Mis Chats"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <!-- ChatActivity - Conversación de chat -->
+        <activity
+            android:name=".ChatActivity"
+            android:exported="false"
+            android:label="Chat"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".ChatsListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ChatsListActivity" />
+        </activity>
+
+        <!-- ImageViewerActivity - Visor de imágenes -->
+        <activity
+            android:name=".ImageViewerActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".TermsConditionsActivity"
+            android:exported="false"
+            android:label="Términos y Condiciones"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+
+        <!-- PrivacyPolicyActivity - Política de Privacidad -->
+        <activity
+            android:name=".PrivacyPolicyActivity"
+            android:exported="false"
+            android:label="Política de Privacidad"
+            android:parentActivityName=".MapsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MapsActivity" />
+        </activity>
+        <activity
+            android:name=".NoConnectionActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MapsExample.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PublicProfileActivity"
+            android:exported="false"
+            android:label="Perfil de Usuario"
+            android:parentActivityName=".AlertDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".AlertDetailActivity" />
+        </activity>
+    </application>
+
+</manifest>

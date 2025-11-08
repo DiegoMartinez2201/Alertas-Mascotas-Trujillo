@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="64dp"
+    android:viewportWidth="48"
+    android:viewportHeight="64">
+
+    <path
+        android:fillColor="#27AE60"
+        android:pathData="M24,2C13.51,2 5,10.51 5,21c0,15.75 19,41 19,41s19,-25.25 19,-41C43,10.51 34.49,2 24,2z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,8C16.82,8 11,13.82 11,21c0,10.5 13,27.5 13,27.5S37,31.5 37,21C37,13.82 31.18,8 24,8z"/>
+
+    <!-- Corazón verde -->
+    <path
+        android:fillColor="#27AE60"
+        android:pathData="M24,28l-1.06,-1.06C17.68,21.68 15,19.28 15,16.25C15,13.92 16.92,12 19.25,12c1.31,0 2.56,0.61 3.38,1.57C23.44,12.61 24.69,12 26,12c2.33,0 4.25,1.92 4.25,4.25c0,3.03 -2.68,5.43 -7.94,10.69L24,28z"/>
+</vector>

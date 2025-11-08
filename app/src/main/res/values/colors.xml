@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="chip_selected">#4CAF50</color>
+    <color name="chip_unselected">#E0E0E0</color>
+    <color name="chip_text_selected">#FFFFFF</color>
+    <color name="chip_text_unselected">#757575</color>
+    <!-- Colores adaptativos para textos -->
+    <color name="text_primary_adaptive">#212121</color>
+    <color name="text_secondary_adaptive">#616161</color>
+    <color name="text_tertiary_adaptive">#9E9E9E</color>
+
+    <!-- Colores para fondos de cards -->
+    <color name="card_text_dark">#212121</color>
+    <color name="card_text_medium">#424242</color>
+    <color name="card_text_light">#616161</color>
+
+    <!-- Colores que mantienen su valor (advertencias, éxito, etc) -->
+    <color name="success_green">#27AE60</color>
+    <color name="warning_orange">#E67E22</color>
+    <color name="error_red">#E74C3C</color>
+    <color name="info_blue">#3498DB</color>
+
+    <color name="menu_text_color">#212121</color>
+    <color name="menu_icon_tint">#616161</color>
+    <color name="link_blue">#1976D2</color>
+    <!-- Colores para links y botones -->
+    <color name="link_blue_pressed">#1565C0</color>
+
+    <!-- Colores para tabs -->
+    <color name="tab_selected">#4CAF50</color>
+    <color name="tab_selected_secondary">#2196F3</color>
+    <color name="tab_unselected">#F5F5F5</color>
+
+    <!-- Colores de texto -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#9E9E9E</color>
+
+    <!-- Colores de estado de alertas -->
+    <color name="alert_active">#4CAF50</color>
+    <color name="alert_saved">#2196F3</color>
+    <color name="alert_danger">#F44336</color>
+
+    <!-- Colores de fondo -->
+    <color name="background_light">#F5F5F5</color>
+    <color name="card_background">#FFFFFF</color>
+
+</resources>

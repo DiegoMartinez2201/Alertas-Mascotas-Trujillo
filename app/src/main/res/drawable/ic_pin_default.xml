@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="64dp"
+    android:viewportWidth="48"
+    android:viewportHeight="64">
+
+    <path
+        android:fillColor="#95A5A6"
+        android:pathData="M24,2C13.51,2 5,10.51 5,21c0,15.75 19,41 19,41s19,-25.25 19,-41C43,10.51 34.49,2 24,2z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,8C16.82,8 11,13.82 11,21c0,10.5 13,27.5 13,27.5S37,31.5 37,21C37,13.82 31.18,8 24,8z"/>
+
+    <!-- Huella gris -->
+    <path
+        android:fillColor="#95A5A6"
+        android:pathData="M24,24c-1.5,0 -2.6,1.1 -2.6,2.6S22.5,29.2 24,29.2s2.6,-1.1 2.6,-2.6S25.5,24 24,24zM20,19c-0.8,0 -1.5,0.7 -1.5,1.5S19.2,22 20,22s1.5,-0.7 1.5,-1.5S20.8,19 20,19zM28,19c-0.8,0 -1.5,0.7 -1.5,1.5S27.2,22 28,22s1.5,-0.7 1.5,-1.5S28.8,19 28,19zM18,14c-0.8,0 -1.5,0.7 -1.5,1.5S17.2,17 18,17s1.5,-0.7 1.5,-1.5S18.8,14 18,14zM30,14c-0.8,0 -1.5,0.7 -1.5,1.5S29.2,17 30,17s1.5,-0.7 1.5,-1.5S30.8,14 30,14z"/>
+</vector>
