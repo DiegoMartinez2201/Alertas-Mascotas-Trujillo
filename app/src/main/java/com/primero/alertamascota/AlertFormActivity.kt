@@ -1,8 +1,11 @@
 package com.primero.alertamascota
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.location.Geocoder
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,7 +36,7 @@ class AlertFormActivity : AppCompatActivity() {
     private lateinit var layoutPhotoPlaceholder: LinearLayout
     private lateinit var tvLocationCoords: TextView
     private lateinit var etAddress: TextInputEditText
-    private lateinit var spinnerPetType: Spinner // ✨ NUEVO
+    private lateinit var spinnerPetType: Spinner
     private lateinit var spinnerState: Spinner
     private lateinit var etDescription: TextInputEditText
     private lateinit var btnCancel: Button
@@ -67,14 +70,27 @@ class AlertFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_alert_form)
 
+        // ✅ Habilitar persistencia offline de Firestore
+        enableFirestoreOfflineMode()
+
         // Obtener coordenadas del Intent
         latitude = intent.getDoubleExtra(EXTRA_LATITUDE, 0.0)
         longitude = intent.getDoubleExtra(EXTRA_LONGITUDE, 0.0)
 
-        Log.d(TAG, "Iniciando formulario con coordenadas: $latitude, $longitude")
+        Log.d(TAG, "========================================")
+        Log.d(TAG, "🚀 Iniciando formulario con coordenadas: $latitude, $longitude")
+        Log.d(TAG, "========================================")
+
+        // ✅ Verificar conexión a Firestore al iniciar
+        verifyFirestoreConnection()
+
+        // ✅ Verificar usuario autenticado
+        val user = auth.currentUser
+        Log.d(TAG, "👤 Usuario actual: ${user?.email ?: "NO AUTENTICADO"}")
+        Log.d(TAG, "👤 Usuario UID: ${user?.uid ?: "N/A"}")
 
         initViews()
-        setupSpinners() // ✨ ACTUALIZADO
+        setupSpinners()
         setupListeners()
 
         // Mostrar coordenadas
@@ -84,13 +100,39 @@ class AlertFormActivity : AppCompatActivity() {
         getAddressFromLocation(latitude, longitude)
     }
 
+    private fun enableFirestoreOfflineMode() {
+        try {
+            val settings = com.google.firebase.firestore.FirebaseFirestoreSettings.Builder()
+                .setPersistenceEnabled(true)
+                .build()
+            db.firestoreSettings = settings
+            Log.d(TAG, "✅ Modo offline de Firestore habilitado")
+        } catch (e: Exception) {
+            Log.e(TAG, "⚠️ Error habilitando modo offline (puede que ya esté habilitado): ${e.message}")
+        }
+    }
+
+    private fun verifyFirestoreConnection() {
+        Log.d(TAG, "🔥 Verificando conexión a Firestore...")
+        db.collection("alerts")
+            .limit(1)
+            .get()
+            .addOnSuccessListener {
+                Log.d(TAG, "✅ Firestore conectado correctamente (${it.size()} documentos encontrados)")
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "❌ Error conectando a Firestore: ${e.message}")
+                Toast.makeText(this, "Advertencia: Problema de conexión con Firestore", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private fun initViews() {
         layoutAddPhoto = findViewById(R.id.layoutAddPhoto)
         ivPhotoPreview = findViewById(R.id.ivPhotoPreview)
         layoutPhotoPlaceholder = findViewById(R.id.layoutPhotoPlaceholder)
         tvLocationCoords = findViewById(R.id.tvLocationCoords)
         etAddress = findViewById(R.id.etAddress)
-        spinnerPetType = findViewById(R.id.spinnerPetType) // ✨ NUEVO
+        spinnerPetType = findViewById(R.id.spinnerPetType)
         spinnerState = findViewById(R.id.spinnerState)
         etDescription = findViewById(R.id.etDescription)
         btnCancel = findViewById(R.id.btnCancel)
@@ -98,7 +140,6 @@ class AlertFormActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
     }
 
-    // ✨ ACTUALIZADO: Configurar ambos spinners
     private fun setupSpinners() {
         // Spinner de tipo de mascota
         val petTypeAdapter = ArrayAdapter.createFromResource(
@@ -151,25 +192,54 @@ class AlertFormActivity : AppCompatActivity() {
                 val address = addresses[0]
                 val fullAddress = address.getAddressLine(0)
                 etAddress.setText(fullAddress)
-                Log.d(TAG, "Dirección obtenida: $fullAddress")
+                Log.d(TAG, "📍 Dirección obtenida: $fullAddress")
             } else {
                 etAddress.setText("No se pudo obtener la dirección")
-                Log.w(TAG, "No se encontraron direcciones")
+                Log.w(TAG, "⚠️ No se encontraron direcciones")
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Error obteniendo dirección: ${e.message}", e)
+            Log.e(TAG, "❌ Error obteniendo dirección: ${e.message}", e)
             etAddress.setText("Error obteniendo dirección")
         }
     }
 
-    // ✨ ACTUALIZADO: Validar tipo de mascota también
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+
+        val isConnected = capabilities != null && (
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+                )
+
+        Log.d(TAG, "🌐 Red disponible: $isConnected")
+        Log.d(TAG, "🌐 Tipo de red: ${when {
+            capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) == true -> "WiFi"
+            capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) == true -> "Datos móviles"
+            capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) == true -> "Ethernet"
+            else -> "Sin conexión"
+        }}")
+
+        return isConnected
+    }
+
     private fun validateAndRegisterAlert() {
         val address = etAddress.text.toString().trim()
         val selectedPetTypePosition = spinnerPetType.selectedItemPosition
         val selectedStatePosition = spinnerState.selectedItemPosition
         val description = etDescription.text.toString().trim()
 
-        Log.d(TAG, "Iniciando validación...")
+        Log.d(TAG, "========================================")
+        Log.d(TAG, "🔍 Iniciando validación...")
+        Log.d(TAG, "========================================")
+
+        // ✅ Verificar red ANTES de validar
+        if (!isNetworkAvailable()) {
+            Toast.makeText(this, "❌ Sin conexión a internet. Verifica tu WiFi o datos móviles.", Toast.LENGTH_LONG).show()
+            return
+        }
 
         // Validaciones
         if (selectedPetTypePosition == 0) {
@@ -189,19 +259,22 @@ class AlertFormActivity : AppCompatActivity() {
 
         val petType = spinnerPetType.selectedItem.toString()
         val state = spinnerState.selectedItem.toString()
-        Log.d(TAG, "Validación exitosa. Tipo: $petType, Estado: $state, Dirección: $address")
+        Log.d(TAG, "✅ Validación exitosa")
+        Log.d(TAG, "   - Tipo: $petType")
+        Log.d(TAG, "   - Estado: $state")
+        Log.d(TAG, "   - Dirección: $address")
+        Log.d(TAG, "   - Tiene foto: ${photoUri != null}")
 
         // Si hay foto, primero subir la foto
         if (photoUri != null) {
-            Log.d(TAG, "Hay foto, subiendo...")
+            Log.d(TAG, "📸 Hay foto, subiendo primero...")
             uploadPhotoAndRegisterAlert(address, petType, state, description)
         } else {
-            Log.d(TAG, "No hay foto, registrando directamente...")
+            Log.d(TAG, "📝 No hay foto, registrando directamente...")
             registerAlert(address, petType, state, description, null)
         }
     }
 
-    // ✨ ACTUALIZADO: Agregar petType
     private fun uploadPhotoAndRegisterAlert(address: String, petType: String, state: String, description: String) {
         showLoading(true)
 
@@ -209,7 +282,7 @@ class AlertFormActivity : AppCompatActivity() {
         if (user == null) {
             Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
             showLoading(false)
-            Log.e(TAG, "Usuario no autenticado")
+            Log.e(TAG, "❌ Usuario no autenticado")
             return
         }
 
@@ -220,83 +293,166 @@ class AlertFormActivity : AppCompatActivity() {
             .child(user.uid)
             .child(fileName)
 
-        Log.d(TAG, "Subiendo foto a: alert_photos/${user.uid}/$fileName")
+        Log.d(TAG, "📸 Subiendo foto a: alert_photos/${user.uid}/$fileName")
 
         // Subir imagen
         photoUri?.let { uri ->
             photoRef.putFile(uri)
                 .addOnProgressListener { taskSnapshot ->
                     val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount).toInt()
-                    Log.d(TAG, "Progreso de subida: $progress%")
+                    Log.d(TAG, "📊 Progreso de subida: $progress%")
                 }
                 .addOnSuccessListener { taskSnapshot ->
-                    Log.d(TAG, "Foto subida exitosamente, obteniendo URL...")
+                    Log.d(TAG, "✅ Foto subida exitosamente, obteniendo URL...")
                     // Obtener URL de descarga
                     photoRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                        Log.d(TAG, "URL obtenida: $downloadUri")
+                        Log.d(TAG, "🔗 URL obtenida: $downloadUri")
                         registerAlert(address, petType, state, description, downloadUri.toString())
                     }.addOnFailureListener { e ->
-                        Log.e(TAG, "Error obteniendo URL de foto: ${e.message}", e)
+                        Log.e(TAG, "❌ Error obteniendo URL de foto: ${e.message}", e)
                         Toast.makeText(this, "Error al obtener URL de foto: ${e.message}", Toast.LENGTH_LONG).show()
                         showLoading(false)
                     }
                 }
                 .addOnFailureListener { e ->
-                    Log.e(TAG, "Error subiendo foto: ${e.message}", e)
+                    Log.e(TAG, "❌ Error subiendo foto: ${e.message}", e)
                     Toast.makeText(this, "Error al subir foto: ${e.message}", Toast.LENGTH_LONG).show()
                     showLoading(false)
                 }
         }
     }
 
-    // ✨ ACTUALIZADO: Guardar petType en Firestore
     private fun registerAlert(address: String, petType: String, state: String, description: String, photoUrl: String?) {
         showLoading(true)
 
         val user = auth.currentUser
         if (user == null) {
+            Log.e(TAG, "❌ Usuario es NULL")
             Toast.makeText(this, "Usuario no autenticado", Toast.LENGTH_SHORT).show()
             showLoading(false)
-            Log.e(TAG, "Usuario no autenticado al registrar")
             return
         }
 
-        Log.d(TAG, "Registrando alerta en Firestore...")
+        Log.d(TAG, "========================================")
+        Log.d(TAG, "🔥 REGISTRANDO ALERTA EN FIRESTORE")
+        Log.d(TAG, "========================================")
+        Log.d(TAG, "🔐 User UID: ${user.uid}")
+        Log.d(TAG, "📧 User Email: ${user.email}")
+        Log.d(TAG, "✅ User isAnonymous: ${user.isAnonymous}")
+        Log.d(TAG, "🔥 Firestore instance: $db")
+
+        // Verificar red nuevamente
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        Log.d(TAG, "🌐 Red activa: ${network != null}")
+        Log.d(TAG, "🌐 Capacidades: $capabilities")
 
         // Crear documento de alerta
         val alertData = hashMapOf(
             "lat" to latitude,
             "lng" to longitude,
             "address" to address,
-            "petType" to petType, // ✨ NUEVO CAMPO
+            "petType" to petType,
             "state" to state,
             "description" to description,
-            "photoUrl" to photoUrl,
+            "photoUrl" to (photoUrl ?: ""),
             "ownerUid" to user.uid,
-            "ownerEmail" to user.email,
-            "createdAt" to FieldValue.serverTimestamp(),
+            "ownerEmail" to (user.email ?: "sin_email"),
+            "createdAt" to com.google.firebase.Timestamp.now(),
             "status" to "active"
         )
 
-        Log.d(TAG, "Datos de alerta: $alertData")
+        Log.d(TAG, "📦 Datos a enviar:")
+        alertData.forEach { (key, value) ->
+            Log.d(TAG, "   - $key: $value")
+        }
+        Log.d(TAG, "========================================")
+
+        // Timeout handler
+        val timeoutHandler = android.os.Handler(android.os.Looper.getMainLooper())
+        var timedOut = false
+        val timeoutRunnable = Runnable {
+            timedOut = true
+            Log.e(TAG, "========================================")
+            Log.e(TAG, "⏱️ TIMEOUT: La operación tardó más de 15 segundos")
+            Log.e(TAG, "========================================")
+            Log.e(TAG, "Posibles causas:")
+            Log.e(TAG, "1. Reglas de Firestore bloqueando la escritura")
+            Log.e(TAG, "2. Conexión de red muy lenta")
+            Log.e(TAG, "3. Firestore no responde")
+            Log.e(TAG, "========================================")
+            Toast.makeText(this, "La operación está tardando mucho. Verifica:\n1. Reglas de Firestore\n2. Tu conexión", Toast.LENGTH_LONG).show()
+            showLoading(false)
+        }
+        timeoutHandler.postDelayed(timeoutRunnable, 15000)
+
+        Log.d(TAG, "🚀 Llamando a db.collection('alerts').add()...")
 
         db.collection("alerts")
             .add(alertData)
             .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "✅ Alerta registrada con ID: ${documentReference.id}")
+                if (timedOut) {
+                    Log.w(TAG, "⚠️ Éxito llegó después del timeout")
+                    return@addOnSuccessListener
+                }
+                timeoutHandler.removeCallbacks(timeoutRunnable)
+                Log.d(TAG, "========================================")
+                Log.d(TAG, "✅✅✅ ÉXITO TOTAL ✅✅✅")
+                Log.d(TAG, "========================================")
+                Log.d(TAG, "📄 Alerta registrada con ID: ${documentReference.id}")
+                Log.d(TAG, "========================================")
                 Toast.makeText(this, "¡Alerta registrada exitosamente! 🐾", Toast.LENGTH_LONG).show()
                 showLoading(false)
-
-                // Retornar a MapsActivity
                 setResult(Activity.RESULT_OK)
                 finish()
             }
             .addOnFailureListener { e ->
-                Log.e(TAG, "❌ Error registrando alerta: ${e.message}", e)
+                if (timedOut) {
+                    Log.w(TAG, "⚠️ Error llegó después del timeout")
+                    return@addOnFailureListener
+                }
+                timeoutHandler.removeCallbacks(timeoutRunnable)
+                Log.e(TAG, "========================================")
+                Log.e(TAG, "❌❌❌ ERROR AL REGISTRAR ❌❌❌")
+                Log.e(TAG, "========================================")
+                Log.e(TAG, "Clase de error: ${e.javaClass.name}")
+                Log.e(TAG, "Mensaje: ${e.message}")
+                Log.e(TAG, "Mensaje localizado: ${e.localizedMessage}")
+                Log.e(TAG, "Causa: ${e.cause}")
+                Log.e(TAG, "========================================")
+                Log.e(TAG, "Stack trace completo:")
                 e.printStackTrace()
-                Toast.makeText(this, "Error al registrar alerta: ${e.message}", Toast.LENGTH_LONG).show()
+                Log.e(TAG, "========================================")
+
+                val errorMsg = when {
+                    e.message?.contains("PERMISSION_DENIED", ignoreCase = true) == true -> {
+                        Log.e(TAG, "🔒 PROBLEMA DE PERMISOS: Las reglas de Firestore están bloqueando la escritura")
+                        "❌ Error de permisos en Firestore.\n\nVerifica las reglas en Firebase Console."
+                    }
+                    e.message?.contains("UNAVAILABLE", ignoreCase = true) == true -> {
+                        Log.e(TAG, "🌐 FIRESTORE NO DISPONIBLE: Problema de red o servicio caído")
+                        "❌ Firestore no disponible.\n\nVerifica tu conexión a internet."
+                    }
+                    e.message?.contains("UNAUTHENTICATED", ignoreCase = true) == true -> {
+                        Log.e(TAG, "🔐 NO AUTENTICADO: El usuario no está correctamente autenticado")
+                        "❌ Usuario no autenticado.\n\nIntenta cerrar sesión y volver a entrar."
+                    }
+                    e.message?.contains("DEADLINE_EXCEEDED", ignoreCase = true) == true -> {
+                        Log.e(TAG, "⏱️ TIMEOUT DE FIRESTORE: La red es muy lenta")
+                        "❌ Timeout de Firestore.\n\nTu conexión es muy lenta."
+                    }
+                    else -> {
+                        Log.e(TAG, "❓ ERROR DESCONOCIDO")
+                        "❌ Error desconocido: ${e.message}"
+                    }
+                }
+
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show()
                 showLoading(false)
             }
+
+        Log.d(TAG, "⏳ Esperando respuesta de Firestore...")
     }
 
     private fun showLoading(show: Boolean) {
@@ -304,5 +460,11 @@ class AlertFormActivity : AppCompatActivity() {
         btnRegister.isEnabled = !show
         btnCancel.isEnabled = !show
         layoutAddPhoto.isEnabled = !show
+
+        if (show) {
+            Log.d(TAG, "⏳ Mostrando loading...")
+        } else {
+            Log.d(TAG, "✅ Ocultando loading")
+        }
     }
 }

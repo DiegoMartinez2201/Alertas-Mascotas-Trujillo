@@ -17,6 +17,8 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
@@ -58,9 +60,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     companion object {
         private const val TAG = "MapsActivity"
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
-        private const val ALERT_RADIUS_KM = 3.0 // Radio de 10 km
+        private const val ALERT_RADIUS_KM = 3.0 // Radio de 3 km
         private const val REQUEST_CONNECTION_CHECK = 9999
-
     }
 
     private lateinit var mMap: GoogleMap
@@ -71,6 +72,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var networkCallback: ConnectivityManager.NetworkCallback? = null
     private lateinit var noConnectionLayout: View
+
     // UI Elements
     private lateinit var fabCreateAlert: FloatingActionButton
     private lateinit var fabCancel: FloatingActionButton
@@ -88,6 +90,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
     private var selectedPetTypes = mutableSetOf<String>()
     private var selectedStates = mutableSetOf<String>()
     private var isFilterPanelVisible = false
+
+    // ✨ NUEVA: Leyenda expandible
+    private lateinit var cardLegend: androidx.cardview.widget.CardView
+    private lateinit var legendContent: LinearLayout
+    private lateinit var ivLegendArrow: ImageView
+    private var isLegendExpanded = false
+
+    // ✨ NUEVA: Barra de iconos de alertas
+    private lateinit var cardAlertLegend: androidx.cardview.widget.CardView
+    private lateinit var alertLegendContent: LinearLayout
+    private lateinit var ivAlertLegendArrow: ImageView
+    private var isAlertLegendExpanded = false
 
     // SharedPreferences para notificaciones
     private lateinit var prefs: SharedPreferences
@@ -215,7 +229,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         btnApplyFilters = findViewById(R.id.btnApplyFilters)
         tvFilterCount = findViewById(R.id.tvFilterCount)
 
+        // ✨ NUEVA: Inicializar leyenda
+        cardLegend = findViewById(R.id.cardLegend)
+        legendContent = findViewById(R.id.legendContent)
+        ivLegendArrow = findViewById(R.id.ivLegendArrow)
+
+        // ✨ NUEVA: Inicializar barra de iconos
+        cardAlertLegend = findViewById(R.id.cardAlertLegend)
+        alertLegendContent = findViewById(R.id.alertLegendContent)
+        ivAlertLegendArrow = findViewById(R.id.ivAlertLegendArrow)
+
         setupFilters()
+        setupLegend()
+        setupAlertLegend()
 
         navigationView.setNavigationItemSelectedListener(this)
 
@@ -283,6 +309,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
+
     private fun setupLocationCallback() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
@@ -315,6 +342,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             }
         }
     }
+
     private fun setupGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -322,6 +350,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
     }
+
     private fun setupNetworkMonitoring() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -350,6 +379,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             connectivityManager.registerDefaultNetworkCallback(networkCallback as ConnectivityManager.NetworkCallback)
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -382,6 +412,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         val intent = Intent(this, NoConnectionActivity::class.java)
         startActivityForResult(intent, REQUEST_CONNECTION_CHECK)
     }
+
     private fun setupFilters() {
         btnFilters.setOnClickListener {
             toggleFilterPanel()
@@ -396,6 +427,61 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             toggleFilterPanel()
         }
     }
+
+    // ✨ NUEVA: Configurar leyenda expandible
+    private fun setupLegend() {
+        cardLegend.setOnClickListener {
+            toggleLegend()
+        }
+    }
+
+    private fun toggleLegend() {
+        isLegendExpanded = !isLegendExpanded
+
+        if (isLegendExpanded) {
+            // Expandir
+            legendContent.visibility = View.VISIBLE
+            ivLegendArrow.animate()
+                .rotation(0f)
+                .setDuration(300)
+                .start()
+        } else {
+            // Contraer
+            legendContent.visibility = View.GONE
+            ivLegendArrow.animate()
+                .rotation(180f)
+                .setDuration(300)
+                .start()
+        }
+    }
+
+    // ✨ NUEVA: Configurar barra de iconos de alertas
+    private fun setupAlertLegend() {
+        cardAlertLegend.setOnClickListener {
+            toggleAlertLegend()
+        }
+    }
+
+    private fun toggleAlertLegend() {
+        isAlertLegendExpanded = !isAlertLegendExpanded
+
+        if (isAlertLegendExpanded) {
+            // Expandir (lado izquierdo, flecha apunta hacia la izquierda)
+            alertLegendContent.visibility = View.VISIBLE
+            ivAlertLegendArrow.animate()
+                .rotation(180f)
+                .setDuration(300)
+                .start()
+        } else {
+            // Contraer (flecha apunta hacia la derecha)
+            alertLegendContent.visibility = View.GONE
+            ivAlertLegendArrow.animate()
+                .rotation(0f)
+                .setDuration(300)
+                .start()
+        }
+    }
+
     private fun toggleFilterPanel() {
         isFilterPanelVisible = !isFilterPanelVisible
         cardFilters.visibility = if (isFilterPanelVisible) View.VISIBLE else View.GONE
@@ -408,6 +494,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 getColor(android.R.color.darker_gray)
         )
     }
+
     private fun clearFilters() {
         chipGroupPetType.clearCheck()
         chipGroupState.clearCheck()
@@ -420,6 +507,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         loadAlertsInRadius()
     }
+
     private fun applyFilters() {
         selectedPetTypes.clear()
         selectedStates.clear()
@@ -466,6 +554,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
         loadAlertsInRadius()
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_notification_settings -> {
@@ -488,7 +577,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 val intent = Intent(this, FeedbackActivity::class.java)
                 startActivity(intent)
             }
-            // ✨ NUEVOS: Términos y Privacidad
             R.id.nav_terms -> {
                 val intent = Intent(this, TermsConditionsActivity::class.java)
                 startActivity(intent)
@@ -756,7 +844,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                         if (distanceKm <= ALERT_RADIUS_KM) {
                             alertsInRadius++
 
-                            // ✨ APLICAR FILTROS
+                            // Aplicar filtros
                             val passesFilter = applyFilterLogic(petType, state)
 
                             if (passesFilter) {
@@ -765,13 +853,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
 
                                 val customIcon = getMarkerIconForState(state)
 
-
                                 val marker = mMap.addMarker(
                                     MarkerOptions()
                                         .position(pos)
                                         .title("$petType - $state 🐾")
                                         .snippet("A %.1f km • Reportado por: $ownerEmail".format(distanceKm))
-                                        .icon(customIcon)                                )
+                                        .icon(customIcon)
+                                )
 
                                 marker?.tag = doc.id
                             }
@@ -779,7 +867,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                     }
                 }
 
-                // ✨ ACTUALIZAR CONTADOR
+                // Actualizar contador
                 updateFilterCount(alertsFiltered, alertsInRadius)
 
                 Log.d(TAG, "Alertas mostradas: $alertsFiltered de $alertsInRadius en radio de ${ALERT_RADIUS_KM}km")
@@ -793,6 +881,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
                 }
             }
     }
+
     private fun applyFilterLogic(petType: String, state: String): Boolean {
         // Si no hay filtros activos, mostrar todo
         if (selectedPetTypes.isEmpty() && selectedStates.isEmpty()) {
@@ -816,6 +905,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         // Debe cumplir ambos criterios (AND)
         return petTypeMatch && stateMatch
     }
+
     private fun updateFilterCount(filtered: Int, total: Int) {
         val filterText = if (selectedPetTypes.isEmpty() && selectedStates.isEmpty()) {
             "Mostrando $filtered alertas"
@@ -824,6 +914,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         }
         tvFilterCount.text = filterText
     }
+
     private fun openAlertDetail(alertId: String) {
         // Mostrar Bottom Sheet en lugar de abrir la actividad directamente
         val bottomSheet = AlertPreviewBottomSheet.newInstance(alertId)
@@ -893,6 +984,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
             connectivityManager.unregisterNetworkCallback(networkCallback as ConnectivityManager.NetworkCallback)
         }
     }
+
     private fun getMarkerIconForState(state: String): BitmapDescriptor {
         val iconResource = when (state) {
             "Herido" -> R.drawable.ic_pin_injured
@@ -907,6 +999,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback,
         // Convertir el recurso drawable a BitmapDescriptor
         return bitmapDescriptorFromVector(iconResource)
     }
+
     private fun bitmapDescriptorFromVector(vectorResId: Int): BitmapDescriptor {
         val vectorDrawable = ContextCompat.getDrawable(this, vectorResId)
             ?: return BitmapDescriptorFactory.defaultMarker()

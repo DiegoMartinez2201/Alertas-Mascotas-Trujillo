@@ -9,6 +9,12 @@
     tools:openDrawer="start">
 
     <!-- Contenido principal (el mapa) -->
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="git rm -r --cached app/release&#xA;" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -55,7 +61,7 @@
 
         </LinearLayout>
 
-        <!-- ✨ NUEVO: Panel de Filtros -->
+        <!-- ✨ Panel de Filtros -->
         <androidx.cardview.widget.CardView
             android:id="@+id/cardFilters"
             android:layout_width="match_parent"
@@ -72,7 +78,6 @@
                 android:padding="12dp"
                 android:background="@android:color/white">
 
-                <!-- Filtro por Tipo de Mascota -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -132,7 +137,6 @@
                     </com.google.android.material.chip.ChipGroup>
                 </HorizontalScrollView>
 
-                <!-- Filtro por Estado -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -207,7 +211,6 @@
                     </com.google.android.material.chip.ChipGroup>
                 </HorizontalScrollView>
 
-                <!-- Botones de Acción -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -233,7 +236,6 @@
                         android:backgroundTint="#3498DB"/>
                 </LinearLayout>
 
-                <!-- Contador de resultados -->
                 <TextView
                     android:id="@+id/tvFilterCount"
                     android:layout_width="wrap_content"
@@ -270,6 +272,290 @@
             android:gravity="center"
             android:elevation="4dp"
             android:visibility="gone" />
+
+        <!-- ✨ BARRA DE ICONOS DE ALERTAS (LADO IZQUIERDO) -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardAlertLegend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="100dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#FFFFFF">
+
+                <!-- Flecha para iconos (PRIMERO - LADO IZQUIERDO) -->
+                <ImageView
+                    android:id="@+id/ivAlertLegendArrow"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/ic_media_play"
+                    android:rotation="0"
+                    android:padding="12dp"
+                    android:tint="#E74C3C"
+                    android:contentDescription="Ver tipos de alertas"/>
+
+                <!-- Contenido expandible con iconos -->
+                <LinearLayout
+                    android:id="@+id/alertLegendContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp"
+                    android:visibility="gone"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📍 Tipos de Alertas"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C3E50"
+                        android:layout_marginBottom="12dp"/>
+
+                    <!-- Herido -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pin_injured"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Herido"
+                            android:textSize="12sp"
+                            android:textColor="#34495E"/>
+                    </LinearLayout>
+
+                    <!-- Perdido -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pin_lost"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Perdido"
+                            android:textSize="12sp"
+                            android:textColor="#34495E"/>
+                    </LinearLayout>
+
+                    <!-- Abandonado -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pin_abandoned"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Abandonado"
+                            android:textSize="12sp"
+                            android:textColor="#34495E"/>
+                    </LinearLayout>
+
+                    <!-- En Peligro -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pin_danger"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="En Peligro"
+                            android:textSize="12sp"
+                            android:textColor="#34495E"/>
+                    </LinearLayout>
+
+                    <!-- Adopción -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="8dp">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pin_adoption"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Necesita Adopción"
+                            android:textSize="12sp"
+                            android:textColor="#34495E"/>
+                    </LinearLayout>
+
+                    <!-- Enfermo -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical">
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_pin_sick"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Enfermo"
+                            android:textSize="12sp"
+                            android:textColor="#34495E"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- ✨ LEYENDA DE GUÍA RÁPIDA -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardLegend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="100dp"
+            app:cardElevation="6dp"
+            app:cardCornerRadius="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:background="#FFFFFF">
+
+                <!-- Contenido expandible -->
+                <LinearLayout
+                    android:id="@+id/legendContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="💡 Guía Rápida"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#2C3E50"
+                        android:layout_marginBottom="12dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🐾 Toca el botón + para crear una alerta"
+                        android:textSize="13sp"
+                        android:textColor="#34495E"
+                        android:layout_marginBottom="6dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📍 Selecciona la ubicación en el mapa"
+                        android:textSize="13sp"
+                        android:textColor="#34495E"
+                        android:layout_marginBottom="6dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="📷 Agrega fotos y descripción"
+                        android:textSize="13sp"
+                        android:textColor="#34495E"
+                        android:layout_marginBottom="6dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔍 Usa los filtros para buscar alertas"
+                        android:textSize="13sp"
+                        android:textColor="#34495E"
+                        android:layout_marginBottom="6dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔔 Activa notificaciones en el menú"
+                        android:textSize="13sp"
+                        android:textColor="#34495E"/>
+
+                </LinearLayout>
+
+                <!-- Flecha -->
+                <ImageView
+                    android:id="@+id/ivLegendArrow"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@android:drawable/ic_media_play"
+                    android:rotation="180"
+                    android:padding="12dp"
+                    android:tint="#3498DB"
+                    android:contentDescription="Expandir ayuda"/>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
         <!-- FAB para crear marcador -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

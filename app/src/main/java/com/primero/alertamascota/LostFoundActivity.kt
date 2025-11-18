@@ -30,7 +30,7 @@ class LostFoundActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "LostFoundActivity"
-        private const val ALERT_RADIUS_KM = 10.0 // Radio de 10 km
+        private const val ALERT_RADIUS_KM =3.0 // Radio de 10 km
     }
 
     private lateinit var recyclerView: RecyclerView
